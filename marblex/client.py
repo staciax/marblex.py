@@ -38,6 +38,7 @@ class Client:
         return Exchange(client=self, data=data)
 
     def close(self) -> None:
+        """ Close the client. """
         self._http.close()
 
     def __enter__(self) -> Client:

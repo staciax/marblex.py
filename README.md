@@ -1,9 +1,9 @@
 # marblex.py
  A library to get various cryptocurrency prices from the marblex API.
 
-[//]: # (## Installation)
+## Installation
 
-[//]: # (- ```pip install marblex.py```)
+- ```pip install marblex.py```
 
 ## Example
 ```python
