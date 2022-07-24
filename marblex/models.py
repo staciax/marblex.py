@@ -19,7 +19,7 @@ class Coin:
 
     """ Coin """
 
-    def __init__(self, *, client: Client, data: CoinPayload) -> None:
+    def __init__(self, *, client: Optional[Client], data: CoinPayload) -> None:
         self._client = client
         self.token_code: str = data['tokenCode']
         self._update(data)
@@ -42,10 +42,18 @@ class Coin:
     def __ne__(self, other) -> bool:
         return not self.__eq__(other)
 
+    def __hash__(self) -> int:
+        return hash(self.token_code)
+
     @property
     def _exchange(self) -> Optional[Exchange]:
         """ Return the Exchange object for this Coin. """
         return self._client.get_exchange()
+
+    @property
+    def _average_price(self) -> float:
+        """ Return the average price of the coin. """
+        return float(self._price_major + "." + self._price_minor)
 
     @property
     def percent(self) -> float:
@@ -68,11 +76,6 @@ class Coin:
                 setattr(self._client, coin, e_percent)
 
         return getattr(self._client, coin)
-
-    @property
-    def _average_price(self) -> float:
-        """ Return the average price of the coin. """
-        return float(self._price_major + "." + self._price_minor)
 
     @property
     def THB(self) -> str:
@@ -135,3 +138,49 @@ class Exchange:
     def USD(self) -> float:
         """ Return the price of the coin in USD. """
         return self._rates['USD']
+
+    @property
+    def EUR(self) -> float:
+        """ Return the price of the coin in EUR. """
+        return self._rates['EUR']
+
+    @property
+    def JPY(self) -> float:
+        """ Return the price of the coin in JPY. """
+        return self._rates['JPY']
+
+    @property
+    def AUD(self) -> float:
+        """ Return the price of the coin in AUD. """
+        return self._rates['AUD']
+
+    @property
+    def NZD(self) -> float:
+        """ Return the price of the coin in NZD. """
+        return self._rates['NZD']
+
+    @property
+    def GBP(self) -> float:
+        """ Return the price of the coin in GBP. """
+        return self._rates['GBP']
+
+    @property
+    def CHF(self) -> float:
+        """ Return the price of the coin in CHF. """
+        return self._rates['CHF']
+
+    @property
+    def CAD(self) -> float:
+        """ Return the price of the coin in CAD. """
+        return self._rates['CAD']
+
+    @property
+    def ZAR(self) -> float:
+        """ Return the price of the coin in ZAR. """
+        return self._rates['ZAR']
+
+    def from_str(self, value: str) -> float:
+        """ Return the price of the coin in the given currency. """
+        if value.upper() not in self._rates:
+            raise ValueError(f'Unknown currency {value}')
+        return self._rates[value]

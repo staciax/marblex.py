@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import requests
-
+import logging
 from typing import Any, TYPE_CHECKING
+
+_log = logging.getLogger(__name__)
 
 __all__ = ('HTTPClient',)
 
@@ -27,8 +29,10 @@ class HTTPClient:
     def request(self, method: str, url: str, **kwargs: Any) -> Any:
         with self.__session.request(method, url, **kwargs) as response:
             if response.status_code == 200:
+                _log.debug(f'HTTP request successful: {response.url}')
                 return response.json()
             else:
+                _log.error(f'HTTP request failed: {response.url}')
                 return None
 
             # todo error handling
@@ -43,4 +47,5 @@ class HTTPClient:
         return self.request('GET', 'https://api.loremboard.finance/api/v1/dashboard/fiat/latest')
 
     def close(self) -> None:
+        _log.debug('Closing HTTP client')
         self.__session.close()

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import logging
 from .http import HTTPClient
 from .models import *
 
 from typing import Optional
+
+_log = logging.getLogger(__name__)
 
 __all__ = ('Client',)
 
@@ -42,6 +45,7 @@ class Client:
         self._http.close()
 
     def __enter__(self) -> Client:
+        _log.debug('Entering context manager')
         return self
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:

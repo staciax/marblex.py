@@ -4,9 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "marblex.py"
+version = "1.0.3a"
 description = "A library to get various cryptocurrency prices from the marblex API"
 readme = "README.md"
-authors = [{ name = "marblex.py", email = "ixximm.11820@gmail.com" }]
+authors = [{ name = "xStacia", email = "ixximm.11820@gmail.com" }]
 requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -21,6 +22,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
 ]
 keywords = ["marblex", "ninokuni", "nft"]
+license = { file = "LICENSE" }
 
 [tool.pyright]
 include = [
