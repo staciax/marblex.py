@@ -4,11 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "marblex.py"
-version = "1.0.0a"
 description = "A library to get various cryptocurrency prices from the marblex API"
 readme = "README.md"
 authors = [{ name = "marblex.py", email = "ixximm.11820@gmail.com" }]
-license = { file = "LICENSE" }
 requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",

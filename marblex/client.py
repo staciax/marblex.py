@@ -9,7 +9,7 @@ __all__ = ('Client',)
 
 class Client:
 
-    """ Client """
+    """ Marblex API Wrapper Client """
 
     def __init__(self):
         self._http = HTTPClient()

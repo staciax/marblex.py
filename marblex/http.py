@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class HTTPClient:
 
-    """ HTTPClient """
+    """Represents an HTTP client sending HTTP requests to the Marblex API."""
 
     BASE_URL = 'https://ninokuni.marblex.io/api'
     PRICE_TOKEN = '/price?tokenType='
@@ -30,6 +30,8 @@ class HTTPClient:
                 return response.json()
             else:
                 return None
+
+            # todo error handling
 
     def fetch_NKA(self) -> CoinPayload:
         return self.request('GET', self.BASE_URL + self.PRICE_TOKEN + 'NKA')

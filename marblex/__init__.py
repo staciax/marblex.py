@@ -10,7 +10,7 @@ from .client import *
 from .models import *
 
 __title__ = 'marblex.py'
-__version__ = '1.0.0a'
+__version__ = '1.0.1a'
 __author__ = 'xStacia'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2022-present xStacia'

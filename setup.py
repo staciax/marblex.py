@@ -29,7 +29,7 @@ setup(
     description='A library to get various cryptocurrency prices from the marblex API',
     long_description=readme,
     install_requires=requirements,
-    python_requires='>=3.6.0',
+    python_requires='>=3.8.0',
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
