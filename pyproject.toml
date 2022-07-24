@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marblex.py"
+version = "1.0.0a"
+description = "A library to get various cryptocurrency prices from the marblex API"
+readme = "README.md"
+authors = [{ name = "marblex.py", email = "ixximm.11820@gmail.com" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP",
+]
+keywords = ["marblex", "ninokuni", "nft"]
+
+[tool.pyright]
+include = [
+    "marblex",
+]
+exclude = [
+    "**/__pycache__"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/staciax/marblex.py"
+"Bug Tracker" = "https://github.com/staciax/marblex.py/issues"
