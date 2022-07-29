@@ -3,7 +3,7 @@
 
 ## Installation
 
-- ```pip install marblex.py```
+- [```pip install marblex.py```](https://pypi.org/project/marblex.py/)
 
 ## Quick Example
 ```python
