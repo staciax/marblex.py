@@ -8,7 +8,7 @@ from typing import Optional
 
 _log = logging.getLogger(__name__)
 
-__all__ = ('Client',)
+__all__ = ('Client', 'Marblex')
 
 class Client:
 
@@ -55,3 +55,5 @@ class Client:
     def __del__(self) -> None:
         self.close()
         return None
+
+Marblex = Client
