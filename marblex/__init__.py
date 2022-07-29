@@ -8,10 +8,9 @@ A basic wrapper for the Marblex API.
 
 from .client import *
 from .models import *
-from .utils import *
 
 __title__ = 'marblex.py'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 __author__ = 'xStacia'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2022-present xStacia'
