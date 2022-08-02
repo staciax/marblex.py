@@ -10,6 +10,7 @@ _log = logging.getLogger(__name__)
 
 __all__ = ('Client', 'Marblex')
 
+# TODO: asynchronous client?
 class Client:
 
     """ Marblex API Wrapper Client """
