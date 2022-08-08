@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from typing import Any, TYPE_CHECKING
+from typing import Any, Dict, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from aiohttp import ClientResponse
@@ -11,7 +11,7 @@ def _to_dict(text: str) -> dict:
     """Convert text to dict"""
     return json.loads(text)
 
-async def json_or_text(response: ClientResponse) -> Any:
+async def json_or_text(response: ClientResponse) -> Union[Dict[str, Any], str]:
     text = await response.text(encoding='utf-8')
     if 'Content-Type' in response.headers:
         if response.headers['Content-Type'] == 'application/data':

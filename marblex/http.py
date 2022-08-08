@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import aiohttp
 import logging
+
 from urllib.parse import urlencode
 
 from . import __version__, utils
@@ -71,7 +72,6 @@ class HTTPClient:
         kwargs['headers'] = {
             'User-Agent': self.user_agent,
         }
-        kwargs['verify_ssl'] = False
 
         async with self.__session.request(method, url, **kwargs) as response:
             if response.status == 200:
@@ -91,7 +91,7 @@ class HTTPClient:
         return self.request(Route('GET', '/price', tokenType='NKT'))
 
     def fetch_loremboard(self) -> Response[LoremboardExchangePayload]:
-        return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem"))
+        return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem", verify_ssl=False))
 
     async def close(self) -> None:
         _log.debug('Closing HTTP client')

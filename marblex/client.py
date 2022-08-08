@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+
 from .http import HTTPClient
 from .models import *
 

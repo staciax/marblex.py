@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import datetime
-from . import utils
+
+from .utils import MISSING
+
 from typing import Dict, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -14,9 +16,6 @@ if TYPE_CHECKING:
     from .client import Client
 
 __all__ = ('Coin', 'Exchange')
-
-MISSING = utils.MISSING
-
 class Coin:
 
     """ Coin """
