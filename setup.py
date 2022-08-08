@@ -26,7 +26,7 @@ setup(
     version=version,
     packages=['marblex'],
     license='MIT',
-    description='A library to get various cryptocurrency prices from the marblex API',
+    description='An Asynchronous Marblex API Wrapper for Python',
     long_description=readme,
     install_requires=requirements,
     python_requires='>=3.8.0',
