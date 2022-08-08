@@ -38,7 +38,7 @@ class Client:
 
     async def get_asterite_token(self) -> Optional[Coin]:
         """ Get NKA Coin. """
-        data = await self.__http.fetch_NKA()
+        data = await self.__http.fetch_asterite_token()
         coin = Coin(client=self, data=data)
         await coin.get_exchange()
         return coin

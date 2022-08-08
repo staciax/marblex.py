@@ -69,11 +69,15 @@ class HTTPClient:
         if self.__session is MISSING:
             self.__session = aiohttp.ClientSession()
 
-        kwargs['headers'] = {
-            'User-Agent': self.user_agent,
-        }
+        print(url)
+
+        # kwargs['headers'] = {
+        #     'User-Agent': self.user_agent,
+        # }
+        kwargs['verify_ssl'] = False
 
         async with self.__session.request(method, url, **kwargs) as response:
+            print(response.status)
             if response.status == 200:
                 _log.debug(f'HTTP request status: {response.status}')
                 data = await utils.json_or_text(response)
@@ -98,7 +102,7 @@ class HTTPClient:
     # exchange endpoints
 
     def fetch_loremboard(self) -> Response[LoremboardExchangePayload]:
-        return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem", verify_ssl=False))
+        return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem"))
 
     async def close(self) -> None:
         _log.debug('Closing HTTP client')
