@@ -21,8 +21,8 @@ mbx = Marblex()
 async def main():
 
     async with mbx:
-        nkt = await mbx.get_NKT()
-        nka = await mbx.get_NKA()
+        nkt = await mbx.get_territe_token()
+        nka = await mbx.get_asterite_token()
 
         print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
         print(f"NKA : {nka.USD}$, Percent: {nka.percent}")

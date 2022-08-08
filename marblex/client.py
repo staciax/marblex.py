@@ -25,20 +25,27 @@ class Client:
         self.__http = HTTPClient()
         self._nkt_percent: str = ''
         self._nka_percent: str = ''
+        self._itu_percent: str = ''
 
-        self._loop = asyncio.get_event_loop()
         self._closed: bool = False
 
-    async def get_NKA(self) -> Optional[Coin]:
-        """ Return the NKA Coin. """
+    async def get_territe_token(self) -> Optional[Coin]:
+        """ Get NKT Coin. """
+        data = await self.__http.fetch_territe_token()
+        coin = Coin(client=self, data=data)
+        await coin.get_exchange()
+        return coin
+
+    async def get_asterite_token(self) -> Optional[Coin]:
+        """ Get NKA Coin. """
         data = await self.__http.fetch_NKA()
         coin = Coin(client=self, data=data)
         await coin.get_exchange()
         return coin
 
-    async def get_NKT(self) -> Optional[Coin]:
-        """ Return the NKT Coin. """
-        data = await self.__http.fetch_NKT()
+    async def get_inetrium_token(self) -> Optional[Coin]:
+        """ Get ITU Coin. """
+        data = await self.__http.fetch_inetrium_token()
         coin = Coin(client=self, data=data)
         await coin.get_exchange()
         return coin

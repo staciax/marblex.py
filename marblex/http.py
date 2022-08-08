@@ -84,11 +84,18 @@ class HTTPClient:
 
             # TODO: error handling
 
-    def fetch_NKA(self) -> Response[CoinPayload]:
+    # marblex endpoints
+
+    def fetch_territe_token(self) -> Response[CoinPayload]:
+        return self.request(Route('GET', '/price', tokenType='NKT'))
+
+    def fetch_asterite_token(self) -> Response[CoinPayload]:
         return self.request(Route('GET', '/price', tokenType='NKA'))
 
-    def fetch_NKT(self) -> Response[CoinPayload]:
-        return self.request(Route('GET', '/price', tokenType='NKT'))
+    def fetch_inetrium_token(self) -> Response[CoinPayload]:
+        return self.request(Route('GET', '/price', tokenType='ITU'))
+
+    # exchange endpoints
 
     def fetch_loremboard(self) -> Response[LoremboardExchangePayload]:
         return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem", verify_ssl=False))
