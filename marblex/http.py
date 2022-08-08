@@ -1,14 +1,24 @@
 from __future__ import annotations
 
-import requests
+import sys
+import aiohttp
 import logging
-from typing import Any, TYPE_CHECKING
+from urllib.parse import urlencode
+
+from . import __version__, utils
+from .utils import MISSING
+
+from typing import Any, ClassVar, Coroutine, Optional, TypeVar, TYPE_CHECKING
 
 _log = logging.getLogger(__name__)
 
 __all__ = ('HTTPClient',)
 
 if TYPE_CHECKING:
+
+    T = TypeVar('T')
+    Response = Coroutine[Any, Any, T]
+
     from .types.marblex import (
         Coin as CoinPayload
     )
@@ -16,36 +26,74 @@ if TYPE_CHECKING:
         LoremboardExchange as LoremboardExchangePayload
     )
 
+class Route:
+
+    BASE_MARBLEX_URL: ClassVar[str] = 'https://ninokuni.marblex.io/api'
+    BASE_LOREM_URL: ClassVar[str] = 'https://api.loremboard.finance/api/v1'
+
+    def __init__(
+        self,
+        method: str,
+        path: str,
+        endpoint: Optional[str] = "mbx",
+        **parameters: Any
+    ) -> None:
+        self.method: str = method
+        self.path: str = path
+
+        url = ''
+        if endpoint == "mbx":
+            url = self.BASE_MARBLEX_URL + path
+        elif endpoint == "lorem":
+            url = self.BASE_LOREM_URL + path
+
+        if parameters:
+            url = url + '?' + urlencode(parameters)
+        self.url: str = url
+
 class HTTPClient:
 
     """Represents an HTTP client sending HTTP requests to the Marblex API."""
 
-    BASE_URL = 'https://ninokuni.marblex.io/api'
-    PRICE_TOKEN = '/price?tokenType='
-
     def __init__(self) -> None:
-        self.__session = requests.Session()
+        self.__session: aiohttp.ClientSession = MISSING
 
-    def request(self, method: str, url: str, **kwargs: Any) -> Any:
-        with self.__session.request(method, url, **kwargs) as response:
-            if response.status_code == 200:
-                _log.debug(f'HTTP request successful: {response.url}')
-                return response.json()
+        user_agent = 'Marblex.py (https://github.com/staciax/marblex.py {0}) Python/{1[0]}.{1[1]} aiohttp/{2}'
+        self.user_agent: str = user_agent.format(__version__, sys.version_info, aiohttp.__version__)
+
+    async def request(self, route: Route, **kwargs: Any) -> Any:
+        method = route.method
+        url = route.url
+
+        if self.__session is MISSING:
+            self.__session = aiohttp.ClientSession()
+
+        kwargs['headers'] = {
+            'User-Agent': self.user_agent,
+        }
+        kwargs['verify_ssl'] = False
+
+        async with self.__session.request(method, url, **kwargs) as response:
+            if response.status == 200:
+                _log.debug(f'HTTP request status: {response.status}')
+                data = await utils.json_or_text(response)
+                return data
             else:
                 _log.error(f'HTTP request failed: {response.url}')
                 return None
 
-            # todo error handling
+            # TODO: error handling
 
-    def fetch_NKA(self) -> CoinPayload:
-        return self.request('GET', self.BASE_URL + self.PRICE_TOKEN + 'NKA')
+    def fetch_NKA(self) -> Response[CoinPayload]:
+        return self.request(Route('GET', '/price', tokenType='NKA'))
 
-    def fetch_NKT(self) -> CoinPayload:
-        return self.request('GET', self.BASE_URL + self.PRICE_TOKEN + 'NKT')
+    def fetch_NKT(self) -> Response[CoinPayload]:
+        return self.request(Route('GET', '/price', tokenType='NKT'))
 
-    def fetch_loremboard(self) -> LoremboardExchangePayload:
-        return self.request('GET', 'https://api.loremboard.finance/api/v1/dashboard/fiat/latest')
+    def fetch_loremboard(self) -> Response[LoremboardExchangePayload]:
+        return self.request(Route('GET', '/dashboard/fiat/latest', endpoint="lorem"))
 
-    def close(self) -> None:
+    async def close(self) -> None:
         _log.debug('Closing HTTP client')
-        self.__session.close()
+        await self.__session.close()
+        self.__session = MISSING

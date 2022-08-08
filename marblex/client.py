@@ -1,60 +1,73 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 from .http import HTTPClient
 from .models import *
 
-from typing import Optional
+from typing import Type, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+    from types import TracebackType
+
 
 _log = logging.getLogger(__name__)
 
 __all__ = ('Client', 'Marblex')
 
-# TODO: asynchronous client?
 class Client:
 
     """ Marblex API Wrapper Client """
 
     def __init__(self):
-        self._http = HTTPClient()
+        self.__http = HTTPClient()
         self._nkt_percent: str = ''
         self._nka_percent: str = ''
 
-    def get_NKA(self) -> Optional[Coin]:
+        self._loop = asyncio.get_event_loop()
+        self._closed: bool = False
+
+    async def get_NKA(self) -> Optional[Coin]:
         """ Return the NKA Coin. """
-        data = self._http.fetch_NKA()
-        if data is None:
-            return None
-        return Coin(client=self, data=data)
+        data = await self.__http.fetch_NKA()
+        coin = Coin(client=self, data=data)
+        await coin.get_exchange()
+        return coin
 
-    def get_NKT(self) -> Optional[Coin]:
+    async def get_NKT(self) -> Optional[Coin]:
         """ Return the NKT Coin. """
-        data = self._http.fetch_NKT()
-        if data is None:
-            return None
-        return Coin(client=self, data=data)
+        data = await self.__http.fetch_NKT()
+        coin = Coin(client=self, data=data)
+        await coin.get_exchange()
+        return coin
 
-    def get_exchange(self) -> Optional[Exchange]:
+    async def get_exchange(self) -> Optional[Exchange]:
         """ Return the Exchange object. """
-        data = self._http.fetch_loremboard()
-        if data is None:
-            return None
+        data = await self.__http.fetch_loremboard()
         return Exchange(client=self, data=data)
 
-    def close(self) -> None:
-        """ Close the client. """
-        self._http.close()
-
-    def __enter__(self) -> Client:
-        _log.debug('Entering context manager')
+    async def __aenter__(self) -> Self:
+        _log.info('Opened the Marblex client.')
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
-        self.close()
-        return None
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
+        if not self.is_closed():
+            await self.close()
 
-    def __del__(self) -> None:
-        self.close()
-        return None
+    async def close(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        await self.__http.close()
+        _log.info('Closed the Marblex client.')
+
+    def is_closed(self) -> bool:
+        return self._closed
 
 Marblex = Client

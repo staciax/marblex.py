@@ -1,24 +1,28 @@
 # marblex.py
- A library to get various cryptocurrency prices from the marblex API.
+ An Asynchronous Marblex API Wrapper for Python
 
 ## Installation
 
 - [```pip install marblex.py```](https://pypi.org/project/marblex.py/)
 
-## Quick Example
+## Example Usage:
 ```python
+import asyncio
 from marblex import Marblex
 
 mbx = Marblex()
 
-nkt = mbx.get_NKT()
-nka = mbx.get_NKA()
+async def main():
 
-print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
-print(f"NKA : {nka.USD}$, Percent: {nka.percent}")
+    async with mbx:
+        nkt = await mbx.get_NKT()
+        nka = await mbx.get_NKA()
 
-# NKT : 1.47$, Percent: -4.22 %
-# NKA : 3.56$, Percent: +1.61 %
+        print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
+        print(f"NKA : {nka.USD}$, Percent: {nka.percent}")
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
 ```
 
 ## License

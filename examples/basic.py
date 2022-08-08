@@ -1,23 +1,26 @@
+import asyncio
 import time
+
 from marblex import Marblex
 
 mbx = Marblex()
 
-def main() -> None:
+async def main() -> None:
 
-    while True:
+    async with mbx:
+        while True:
 
-        nkt = mbx.get_NKT()
-        nka = mbx.get_NKA()
+            nkt = await mbx.get_NKT()
+            nka = await mbx.get_NKA()
 
-        print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
-        print(f"NKA : {nka.USD}$, Percent: {nka.percent}")
+            print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
+            print(f"NKA : {nka.USD}$, Percent: {nka.percent}")
 
-        # NKT : 1.47$, Percent: -4.22 %
-        # NKA : 3.56$, Percent: +1.61 %
+            # NKT : 1.47$, Percent: -4.22 %
+            # NKA : 3.56$, Percent: +1.61 %
 
-        time.sleep(5)
+            time.sleep(5)
 
 if __name__ == '__main__':
-    with mbx:
-        main()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

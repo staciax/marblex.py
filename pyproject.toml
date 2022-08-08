@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "marblex.py"
-version = "1.1.1"
-description = "A library to get various cryptocurrency prices from the marblex API"
+version = "1.2.0"
+description = "An Asynchronous Marblex API Wrapper for Python"
 readme = "README.md"
 authors = [{ name = "xStacia", email = "ixximm.11820@gmail.com" }]
 requires-python = ">=3.8"

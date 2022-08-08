@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+from . import utils
 from typing import Dict, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -12,8 +13,9 @@ if TYPE_CHECKING:
     )
     from .client import Client
 
-__all__ = ('Coin', 'Exchange',)
+__all__ = ('Coin', 'Exchange')
 
+MISSING = utils.MISSING
 
 class Coin:
 
@@ -22,6 +24,7 @@ class Coin:
     def __init__(self, *, client: Optional[Client], data: CoinPayload) -> None:
         self._client = client
         self.token_code: str = data['tokenCode']
+        self._exchange = MISSING
         self._update(data)
 
     def _update(self, data: CoinPayload) -> None:
@@ -45,10 +48,9 @@ class Coin:
     def __hash__(self) -> int:
         return hash(self.token_code)
 
-    @property
-    def _exchange(self) -> Optional[Exchange]:
+    async def get_exchange(self) -> Optional[Exchange]:
         """ Return the Exchange object for this Coin. """
-        return self._client.get_exchange()
+        self._exchange = await self._client.get_exchange()
 
     @property
     def _average_price(self) -> float:
