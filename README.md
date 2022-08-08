@@ -2,8 +2,15 @@
  An Asynchronous Marblex API Wrapper for Python
 
 ## Installation
+Windows: <br>
+```
+$ pip install -U marblex.py
+```
+Linux/MacOS:
+```
+$  python3 -m pip install -U marblex.py
+```
 
-- [```pip install marblex.py```](https://pypi.org/project/marblex.py/)
 
 ## Example Usage:
 ```python
