@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .client import Client
 
 __all__ = ('Coin', 'Exchange')
+
 class Coin:
 
     """ Coin """

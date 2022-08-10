@@ -69,22 +69,23 @@ class HTTPClient:
         if self.__session is MISSING:
             self.__session = aiohttp.ClientSession()
 
-        print(url)
+        # headers
+        kwargs['headers'] = {
+            'User-Agent': self.user_agent,
+        }
 
-        # kwargs['headers'] = {
-        #     'User-Agent': self.user_agent,
-        # }
+        # verify ssl
         kwargs['verify_ssl'] = False
 
         async with self.__session.request(method, url, **kwargs) as response:
-            print(response.status)
+
             if response.status == 200:
                 _log.debug(f'HTTP request status: {response.status}')
                 data = await utils.json_or_text(response)
                 return data
             else:
                 _log.error(f'HTTP request failed: {response.url}')
-                return None
+                raise Exception(f'HTTP request failed: {response.url}')
 
             # TODO: error handling
 
