@@ -65,7 +65,7 @@ class Coin:
         # thanks to syntaxp for the idea
 
         coin = f'_{self.token_code.lower()}_percent'
-        _current_percent = getattr(self._client, coin)
+        # _current_percent = getattr(self._client, coin)
         e_percent = "{:.2f} %".format(float(self._percent_major + "." + self._percent_minor))
 
         if not e_percent.startswith("-"):

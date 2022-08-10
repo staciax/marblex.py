@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from typing_extensions import Self
     from types import TracebackType
 
-
 _log = logging.getLogger(__name__)
 
 __all__ = ('Client', 'Marblex')
@@ -21,11 +20,16 @@ class Client:
     """ Marblex API Wrapper Client """
 
     def __init__(self):
+
+        # http client
         self.__http = HTTPClient()
+
+        # cache stuff
         self._nkt_percent: str = ''
         self._nka_percent: str = ''
         self._itu_percent: str = ''
 
+        # config stuff
         self._closed: bool = False
 
     async def get_territe_token(self) -> Optional[Coin]:

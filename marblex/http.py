@@ -11,10 +11,6 @@ from .utils import MISSING
 
 from typing import Any, ClassVar, Coroutine, Optional, TypeVar, TYPE_CHECKING
 
-_log = logging.getLogger(__name__)
-
-__all__ = ('HTTPClient',)
-
 if TYPE_CHECKING:
 
     T = TypeVar('T')
@@ -27,6 +23,9 @@ if TYPE_CHECKING:
         LoremboardExchange as LoremboardExchangePayload
     )
 
+_log = logging.getLogger(__name__)
+
+__all__ = ('HTTPClient',)
 class Route:
 
     BASE_MARBLEX_URL: ClassVar[str] = 'https://ninokuni.marblex.io/api'

@@ -2,7 +2,7 @@ from setuptools import setup
 import re
 
 requirements = [
-    'requests',
+    'aiohttp>=3.7.4,<4',
 ]
 
 version = ''

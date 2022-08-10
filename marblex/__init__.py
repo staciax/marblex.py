@@ -6,7 +6,7 @@ A basic wrapper for the Marblex API.
 :license: MIT, see LICENSE for more details.
 """
 __title__ = 'marblex.py'
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 __author__ = 'xStacia'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2022-present xStacia'
