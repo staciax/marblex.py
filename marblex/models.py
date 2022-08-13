@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import warnings
 
 from .utils import MISSING
 
@@ -17,6 +18,8 @@ if TYPE_CHECKING:
 
 __all__ = ('Coin', 'Exchange')
 
+import warnings
+warnings.filterwarnings("ignore")
 class Coin:
 
     """ Coin """
@@ -24,8 +27,12 @@ class Coin:
     def __init__(self, *, client: Optional[Client], data: CoinPayload) -> None:
         self._client = client
         self.token_code: str = data['tokenCode']
-        self._exchange = MISSING
         self._update(data)
+
+        try:
+            self._exchange = self._client.get_exchange()
+        except:
+            self._exchange = MISSING
 
     def _update(self, data: CoinPayload) -> None:
         self._currencies = data['currencies']

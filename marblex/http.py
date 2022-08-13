@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import sys
 import aiohttp
+import requests
 import logging
+import urllib3
 
 from urllib.parse import urlencode
 
@@ -10,6 +12,9 @@ from . import __version__, utils
 from .utils import MISSING
 
 from typing import Any, ClassVar, Coroutine, Optional, TypeVar, TYPE_CHECKING
+
+# disable warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 if TYPE_CHECKING:
 
@@ -107,4 +112,42 @@ class HTTPClient:
     async def close(self) -> None:
         _log.debug('Closing HTTP client')
         await self.__session.close()
+        self.__session = MISSING
+
+class HTTPSyncClient(HTTPClient):
+
+    """Represents an HTTP client sending HTTP requests to the Marblex API."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.__session: requests.Session = MISSING
+
+    def request(self, route: Route, **kwargs: Any) -> Any:
+        method = route.method
+        url = route.url
+
+        if self.__session is MISSING:
+            self.__session = requests.Session()
+
+        # headers
+        kwargs['headers'] = {
+            'User-Agent': self.user_agent,
+        }
+
+        # verify ssl
+        kwargs['verify'] = False
+
+        response = self.__session.request(method, url, **kwargs)
+
+        if response.status_code == 200:
+            _log.debug(f'HTTP request status: {response.status_code}')
+            data = response.json()
+            return data
+        else:
+            _log.error(f'HTTP request failed: {response.url}')
+            raise Exception(f'HTTP request failed: {response.url}')
+
+    def close(self) -> None:
+        _log.debug('Closing HTTP client')
+        self.__session.close()
         self.__session = MISSING
