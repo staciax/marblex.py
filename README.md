@@ -27,8 +27,7 @@ async def main():
         print(f"NKT : {nkt.USD}$, Percent: {nkt.percent}")
         print(f"NKA : {nka.USD}$, Percent: {nka.percent}")
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+asyncio.run(main())
 ```
 ## Synchronous Example:
 ```python
