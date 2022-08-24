@@ -60,7 +60,8 @@ class HTTPClient:
 
     """Represents an HTTP client sending HTTP requests to the Marblex API."""
 
-    def __init__(self) -> None:
+    def __init__(self, ssl: bool = False) -> None:
+        self._ssl = ssl
         self.__session: aiohttp.ClientSession = MISSING
 
         user_agent = 'Marblex.py (https://github.com/staciax/marblex.py {0}) Python/{1[0]}.{1[1]} aiohttp/{2}'
@@ -79,7 +80,7 @@ class HTTPClient:
         }
 
         # verify ssl
-        kwargs['verify_ssl'] = False
+        kwargs['verify_ssl'] = self._ssl
 
         async with self.__session.request(method, url, **kwargs) as response:
 
@@ -118,8 +119,8 @@ class HTTPSyncClient(HTTPClient):
 
     """Represents an HTTP client sending HTTP requests to the Marblex API."""
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, ssl: bool = False) -> None:
+        super().__init__(ssl)
         self.__session: requests.Session = MISSING
 
     def request(self, route: Route, **kwargs: Any) -> Any:
@@ -135,7 +136,7 @@ class HTTPSyncClient(HTTPClient):
         }
 
         # verify ssl
-        kwargs['verify'] = False
+        kwargs['verify'] = self._ssl
 
         response = self.__session.request(method, url, **kwargs)
 

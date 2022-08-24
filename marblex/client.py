@@ -19,10 +19,10 @@ class Client:
 
     """ Marblex API Wrapper Client """
 
-    def __init__(self):
+    def __init__(self, ssl: bool = False):
 
         # http client
-        self.__http = HTTPClient()
+        self.__http = HTTPClient(ssl=ssl)
 
         # cache stuff
         self._nkt_percent: str = ''
@@ -85,9 +85,9 @@ class SyncClient(Client):
 
     """ Marblex API Wrapper Client (Sync) """
 
-    def __init__(self):
+    def __init__(self, ssl: bool = False):
         super().__init__()
-        self.__http = HTTPSyncClient()
+        self.__http = HTTPSyncClient(ssl=ssl)
 
     def get_territe_token(self) -> Optional[Coin]:
         """ Get NKT Coin. """
